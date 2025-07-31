@@ -1,0 +1,6 @@
+github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
+github.com/opensubtitlescli/moviehash v0.1.1 h1:3FJmc8St7LBdjzcGoBpeZA2x4qTe/9LkmX9GYWPSFmE=
+github.com/opensubtitlescli/moviehash v0.1.1/go.mod h1:EmN3Q4NJSPsyFoy+KfFSaK4WA2hIwTEut0t24ttD6Hk=
+github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
+github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
+gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
