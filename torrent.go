@@ -44,6 +44,37 @@ password: adminadmin
 qbittorrent-nox magnet:?xt=urn:btih:A42111C5890A343FF45731B90C98ACD4ED426E42&dn=Prospero%27s+Books+(Peter+Greenaway%2C+1991)&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.tracker.cl%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce&tr=udp%3A%2F%2Fopen.stealth.si%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.torrent.eu.org%3A451%2Fannounce&tr=udp%3A%2F%2Fexodus.desync.com%3A6969%2Fannounce&tr=udp%3A%2F%2Fopen.dstud.io%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.ololosh.space%3A6969%2Fannounce&tr=udp%3A%2F%2Fexplodie.org%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker-udp.gbitt.info%3A80%2Fannounce --save-path=/media/jellyfin/MOVIES/
 
 https://github.com/webtorrent/webtorrent-cli
+
+
+FIX: usergroup do systemctl
+  🛠️ Fix Instructions:
+
+  Option 1: Update systemd Service (Recommended)
+
+  # Stop the service
+  sudo systemctl stop qbittorrent-nox
+
+  # Create service override
+  sudo systemctl edit qbittorrent-nox
+
+  Add this content to the override file:
+  [Service]
+  Group=jellyfin
+  UMask=002
+  SupplementaryGroups=jellyfin
+
+  # Reload systemd and restart
+  sudo systemctl daemon-reload
+  sudo systemctl start qbittorrent-nox
+
+  # Verify the change
+  systemctl show qbittorrent-nox | grep -E "(Group|UMask)"
+
+  # Test the fix
+sudo -u qbittorrent-nox touch /media/jellyfin/SHOWS/test_file
+  sudo -u qbittorrent-nox ls -la /media/jellyfin/SHOWS/test_file
+  sudo -u qbittorrent-nox rm /media/jellyfin/SHOWS/test_file
+
 */
 
 /*

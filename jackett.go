@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"strconv"
+	"strings"
 
 	"moul.io/http2curl"
 )
@@ -31,7 +31,22 @@ func SearchFiles(c *OpenSubtitlesClient, params FileSearchParams) (*SearchResult
 		query = params.Title + " " + params.Year
 	}
 	if params.Type == "show" {
-		query = params.Title + " " + strconv.Itoa(params.Season) + " " + strconv.Itoa(params.Episode)
+		// Handle the case where we have a specific episode search (like "Breaking Bad S01E03")
+		// This happens when downloadNextEpisode calls SearchFiles with a formatted title
+		if strings.Contains(params.Title, " S") && strings.Contains(params.Title, "E") {
+			query = params.Title + " " + params.Year
+		} else {
+			// Legacy support: use MinSeason and MinEpisode if available
+			season := 1
+			episode := 1
+			if params.MinSeason != nil {
+				season = *params.MinSeason
+			}
+			if params.MinEpisode != nil {
+				episode = *params.MinEpisode
+			}
+			query = params.Title + " " + fmt.Sprintf("S%02dE%02d", season, episode)
+		}
 	}
 
 	urlParams := url.Values{}

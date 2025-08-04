@@ -95,9 +95,11 @@ type SearchResultEntry struct {
 }
 
 type FileSearchParams struct {
-	Title   string
-	Type    string
-	Year    string
-	Season  int
-	Episode int
+	Title      string `json:"Title"`
+	Type       string `json:"Type"`
+	Year       string `json:"Year"`
+	MinSeason  *int   `json:"MinSeason,omitempty"`
+	MinEpisode *int   `json:"MinEpisode,omitempty"`
+	MaxSeason  *int   `json:"MaxSeason,omitempty"`
+	MaxEpisode *int   `json:"MaxEpisode,omitempty"`
 }
