@@ -442,7 +442,7 @@ func selectBestTorrent(torrents []SearchResultEntry, referenceSize int64) Search
 
 	for i, torrent := range torrents {
 		// Size similarity score (closer to reference = higher score)
-		torrentSize := int64(torrent.Size)
+		torrentSize := torrent.Size
 		sizeDiff := math.Abs(float64(torrentSize - referenceSize))
 		maxSize := math.Max(float64(torrentSize), float64(referenceSize))
 		sizeSimilarity := 1.0 - (sizeDiff / maxSize)

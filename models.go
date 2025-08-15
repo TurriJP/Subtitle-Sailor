@@ -87,7 +87,7 @@ type SearchResult struct {
 
 type SearchResultEntry struct {
 	Title     string
-	Size      int
+	Size      int64
 	Guid      string
 	ImdbID    string
 	MagnetUri string
