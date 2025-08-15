@@ -49,10 +49,12 @@ func SearchFiles(c *OpenSubtitlesClient, params FileSearchParams) (*SearchResult
 		}
 	}
 
+	trackerList := os.Getenv("TRACKER_LIST")
+
 	urlParams := url.Values{}
 	urlParams.Set("Query", query)
 	urlParams.Set("apikey", c.apiKey)
-	urlParams.Set("Tracker[]", "thepiratebay")
+	urlParams.Set("Tracker[]", trackerList)
 
 	requestURL := c.baseURL + "/indexers/all/results?" + urlParams.Encode()
 

@@ -34,7 +34,7 @@ systemctl status qbittorrent-nox
 
 Enable at boot time: sudo systemctl enable qbittorrent-nox
 
-get my private IP address: ip route get 1.1.1.1 | awk '{print $7}' | head -1)
+get my private IP address: ip route get 1.1.1.1 | awk '{print $7}' | head -1
 
 localhost:8080
 
