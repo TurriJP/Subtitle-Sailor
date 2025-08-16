@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type OmdbService struct {
 	omdbClient *OMDBClient
 }
@@ -16,7 +18,15 @@ func NewOmdbService() (*OmdbService, error) {
 }
 
 func MediaSearch(s *OmdbService, title string, year *int) (*MovieResponse, error) {
-	result, err := s.omdbClient.GetMovieByTitle(title)
+	var result *MovieResponse
+	var err error
+	
+	if year != nil {
+		result, err = s.omdbClient.GetMovieByTitle(title, fmt.Sprintf("%d", *year))
+	} else {
+		result, err = s.omdbClient.GetMovieByTitle(title)
+	}
+	
 	if err != nil {
 		return nil, err
 	}

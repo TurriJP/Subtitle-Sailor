@@ -28,41 +28,15 @@ func NewOMDBClient() (*OMDBClient, error) {
 	}, nil
 }
 
-func (c *OMDBClient) GetMovie(title string, year int) (*MovieResponse, error) {
+
+func (c *OMDBClient) GetMovieByTitle(title string, year ...string) (*MovieResponse, error) {
 	params := url.Values{}
 	params.Set("apikey", c.apiKey)
 	params.Set("t", title)
-	params.Set("y", strconv.Itoa(year))
-
-	requestURL := c.baseURL + "?" + params.Encode()
-
-	resp, err := http.Get(requestURL)
-	if err != nil {
-		return nil, fmt.Errorf("failed to make request: %w", err)
+	
+	if len(year) > 0 && year[0] != "" {
+		params.Set("y", year[0])
 	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response: %w", err)
-	}
-
-	var movieResp MovieResponse
-	if err := json.Unmarshal(body, &movieResp); err != nil {
-		return nil, fmt.Errorf("failed to parse response: %w", err)
-	}
-
-	if movieResp.Response == "False" {
-		return nil, fmt.Errorf("OMDB API error: %s", movieResp.Error)
-	}
-
-	return &movieResp, nil
-}
-
-func (c *OMDBClient) GetMovieByTitle(title string) (*MovieResponse, error) {
-	params := url.Values{}
-	params.Set("apikey", c.apiKey)
-	params.Set("t", title)
 
 	requestURL := c.baseURL + "?" + params.Encode()
 

@@ -717,7 +717,13 @@ func Server() {
 		switch data.Type {
 		case "movie":
 			{
-				response, err := service.omdbClient.GetMovieByTitle(data.Title)
+				var response *MovieResponse
+				var err error
+				if data.Year != "" {
+					response, err = service.omdbClient.GetMovieByTitle(data.Title, data.Year)
+				} else {
+					response, err = service.omdbClient.GetMovieByTitle(data.Title)
+				}
 				if err != nil {
 					fmt.Fprintf(w, "Error getting movie: %s", err)
 				}

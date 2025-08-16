@@ -53,7 +53,7 @@ func handleMovie() error {
 		return err
 	}
 
-	movie, err := client.GetMovie(title, year)
+	movie, err := client.GetMovieByTitle(title, fmt.Sprintf("%d", year))
 	if err != nil {
 		return err
 	}
