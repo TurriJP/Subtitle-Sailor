@@ -103,7 +103,10 @@ func handleMovie() error {
 		var filepath = fileDir + "/" + fileName
 
 		fmt.Printf("Download Link: %s\n", *downloadLink)
-		DownloadFile(filepath, *downloadLink)
+		if err := DownloadFile(filepath, *downloadLink); err != nil {
+			fmt.Printf("Failed to download subtitle: %v\n", err)
+			return err
+		}
 		fmt.Printf("Subtitle downloaded to: %s\n", filepath)
 	}
 
