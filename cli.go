@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -87,16 +88,24 @@ func handleMovie() error {
 		fmt.Printf("  ✓ From trusted uploader\n")
 	}
 	if len(subtitle.Attributes.Files) > 0 {
-		fmt.Printf("  Filename: %s\n", subtitle.Attributes.Files[0].FileName)
-	}
+		var fileName = subtitle.Attributes.Files[0].FileName
+		downloadLink, err := subtitleService.DownloadSubtitles(strconv.Itoa(subtitle.Attributes.Files[0].FileID))
+		if err != nil {
+			fmt.Printf("Failed to get download link: %v\n", err)
+			return nil
+		}
 
-	downloadLink, err := subtitleService.DownloadSubtitles(subtitle.ID)
-	if err != nil {
-		fmt.Printf("Failed to get download link: %v\n", err)
-		return nil
-	}
+		fileDir := "/home/jp"
+		if filename != "" {
+			fileDir = filepath.Dir(filename)
+		}
 
-	fmt.Printf("Download Link: %s\n", *downloadLink)
+		var filepath = fileDir + "/" + fileName
+
+		fmt.Printf("Download Link: %s\n", *downloadLink)
+		DownloadFile(filepath, *downloadLink)
+		fmt.Printf("Subtitle downloaded to: %s\n", filepath)
+	}
 
 	return nil
 }
