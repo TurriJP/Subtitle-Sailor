@@ -100,7 +100,7 @@ func handleMovie() error {
 			fileDir = filepath.Dir(filename)
 		}
 
-		var filepath = fileDir + "/" + fileName
+		var filepath = fileDir + "/" + fileName + ".srt"
 
 		fmt.Printf("Download Link: %s\n", *downloadLink)
 		if err := DownloadFile(filepath, *downloadLink); err != nil {
