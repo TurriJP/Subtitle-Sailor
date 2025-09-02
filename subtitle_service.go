@@ -14,7 +14,7 @@ func NewSubtitleService() (*SubtitleService, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	return &SubtitleService{
 		openSubtitlesClient: client,
 	}, nil
@@ -26,12 +26,12 @@ func (s *SubtitleService) FindSubtitlesForMovie(imdbID, title string, year int, 
 		ImdbID:    imdbID,
 		MovieHash: movieHash,
 	}
-	
+
 	subtitles, err := s.openSubtitlesClient.SearchSubtitles(params)
 	if err != nil {
 		return nil, fmt.Errorf("failed to search subtitles: %w", err)
 	}
-	
+
 	if subtitles.TotalCount == 0 && imdbID != "" {
 		params = SubtitleSearchParams{
 			Languages: "en",
@@ -39,17 +39,17 @@ func (s *SubtitleService) FindSubtitlesForMovie(imdbID, title string, year int, 
 			Year:      strconv.Itoa(year),
 			MovieHash: movieHash,
 		}
-		
+
 		subtitles, err = s.openSubtitlesClient.SearchSubtitles(params)
 		if err != nil {
 			return nil, fmt.Errorf("failed to search subtitles with fallback: %w", err)
 		}
 	}
-	
+
 	if subtitles.TotalCount == 0 {
 		return nil, fmt.Errorf("no subtitles found")
 	}
-	
+
 	bestSubtitle := SelectBestSubtitle(subtitles.Data, filename)
 	return bestSubtitle, nil
 }
@@ -60,12 +60,12 @@ func (s *SubtitleService) FindSubtitlesForEpisode(imdbID, title string, season, 
 		ImdbID:    imdbID,
 		MovieHash: movieHash,
 	}
-	
+
 	subtitles, err := s.openSubtitlesClient.SearchSubtitles(params)
 	if err != nil {
 		return nil, fmt.Errorf("failed to search subtitles: %w", err)
 	}
-	
+
 	if subtitles.TotalCount == 0 && imdbID != "" {
 		params = SubtitleSearchParams{
 			Languages:     "en",
@@ -74,17 +74,26 @@ func (s *SubtitleService) FindSubtitlesForEpisode(imdbID, title string, season, 
 			EpisodeNumber: strconv.Itoa(episode),
 			MovieHash:     movieHash,
 		}
-		
+
 		subtitles, err = s.openSubtitlesClient.SearchSubtitles(params)
 		if err != nil {
 			return nil, fmt.Errorf("failed to search subtitles with fallback: %w", err)
 		}
 	}
-	
+
 	if subtitles.TotalCount == 0 {
 		return nil, fmt.Errorf("no subtitles found")
 	}
-	
+
 	bestSubtitle := SelectBestSubtitle(subtitles.Data, filename)
 	return bestSubtitle, nil
+}
+
+func (s *SubtitleService) DownloadSubtitles(fileId string) (*string, error) {
+	downloadLink, err := s.openSubtitlesClient.GetSubtitlesDownloadLink(fileId)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get download link: %w", err)
+	}
+
+	return &downloadLink.Link, nil
 }

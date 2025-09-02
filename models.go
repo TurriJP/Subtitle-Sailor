@@ -49,6 +49,7 @@ type SubtitleAttributes struct {
 	Comments        string         `json:"comments"`
 	URL             string         `json:"url"`
 	Files           []SubtitleFile `json:"files"`
+	MoviehashMatch  bool           `json:"moviehash_match"`
 }
 
 type SubtitleFile struct {

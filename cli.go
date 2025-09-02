@@ -90,6 +90,14 @@ func handleMovie() error {
 		fmt.Printf("  Filename: %s\n", subtitle.Attributes.Files[0].FileName)
 	}
 
+	downloadLink, err := subtitleService.DownloadSubtitles(subtitle.ID)
+	if err != nil {
+		fmt.Printf("Failed to get download link: %v\n", err)
+		return nil
+	}
+
+	fmt.Printf("Download Link: %s\n", *downloadLink)
+
 	return nil
 }
 
